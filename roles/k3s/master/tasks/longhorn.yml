@@ -3,8 +3,8 @@
   ansible.builtin.file:
     path: "{{ k3s_server_location }}/server/manifests"
     state: directory
-    owner: root
-    group: root
+    owner: {{ ansible_user }}
+    group: {{ ansible_user }}
     mode: "0755"
   when: ansible_host == hostvars[groups['master'][0]]['ansible_host'] | default(groups['master'][0])
 
@@ -12,7 +12,7 @@
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/longhorn/longhorn/{{ longhorn_version }}/deploy/longhorn.yaml
     dest: "{{ k3s_server_location }}/server/manifests/longhorn.yaml"
-    owner: root
-    group: root
+    owner: {{ ansible_user }}
+    group: {{ ansible_user }}
     mode: "0755"
   when: ansible_host == hostvars[groups['master'][0]]['ansible_host'] | default(groups['master'][0])

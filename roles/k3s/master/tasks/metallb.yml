@@ -3,8 +3,8 @@
   ansible.builtin.file:
     path: "{{ k3s_server_location }}/server/manifests"
     state: directory
-    owner: root
-    group: root
+    owner: {{ ansible_user }}
+    group: {{ ansible_user }}
     mode: "0755"
   when: ansible_host == hostvars[groups['master'][0]]['ansible_host'] | default(groups['master'][0])
 
@@ -12,8 +12,8 @@
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/metallb/metallb/{{ metal_lb_controller_tag_version }}/config/manifests/metallb-{{ metal_lb_type }}.yaml
     dest: "{{ k3s_server_location }}/server/manifests/metallb-crds.yaml"
-    owner: root
-    group: root
+    owner: {{ ansible_user }}
+    group: {{ ansible_user }}
     mode: "0755"
   when: ansible_host == hostvars[groups['master'][0]]['ansible_host'] | default(groups['master'][0])
 

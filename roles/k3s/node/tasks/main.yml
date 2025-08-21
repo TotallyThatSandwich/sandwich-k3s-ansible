@@ -4,8 +4,8 @@
   ansible.builtin.template:
     src: k3s.service.j2
     dest: "{{ systemd_dir }}/k3s-node.service"
-    owner: root
-    group: root
+    owner: {{ ansible_user }}
+    group: {{ ansible_user }}
     mode: "0755"
 
 - name: Manage k3s service
