@@ -1,0 +1,4 @@
+---
+- name: Deploy metallb manifest
+  ansible.builtin.include_tasks: metallb.yml
+  tags: metallb

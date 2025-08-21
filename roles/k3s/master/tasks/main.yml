@@ -26,6 +26,14 @@
   ansible.builtin.include_tasks: metallb.yml
   tags: metallb
 
+- name: Deploy vip manifest
+  ansible.builtin.include_tasks: vip.yml
+  tags: vip
+
+- name: Deploy longhorn manifest
+  ansible.builtin.include_tasks: longhorn.yml
+  tags: longhorn
+
 - name: Verification
   block:
     - name: Verify that all nodes actually joined (check k3s-init.service if this fails)

@@ -3,6 +3,9 @@ k3s_server_location: /var/lib/rancher/k3s
 
 k3s_kubectl_binary: k3s kubectl
 
+longhorn_version: v1.5.3
+longhorn_replica_count: 2
+
 kube_vip_arp: true
 kube_vip_iface:
 kube_vip_cloud_provider_tag_version: main

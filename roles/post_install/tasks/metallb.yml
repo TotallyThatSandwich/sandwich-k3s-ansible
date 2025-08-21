@@ -1,0 +1,32 @@
+---
+- name: Ensure manifests directory exists
+  ansible.builtin.file:
+    path: /tmp/k3s
+    state: directory
+    owner: "{{ ansible_user_id }}"
+    mode: "0755"
+  run_once: true
+
+- name: Copy MetalLB custom resources manifest
+  ansible.builtin.template:
+    src: metallb.crs.j2
+    dest: /tmp/k3s/metallb-crs.yaml
+    owner: "{{ ansible_user_id }}"
+    mode: "0644"
+  run_once: true
+
+- name: Apply MetalLB custom resources manifest
+  ansible.builtin.command: >-
+    {{ k3s_kubectl_binary | default('k3s kubectl') }} apply -f /tmp/k3s/metallb-crs.yaml
+  register: apply_result
+  until: apply_result.rc == 0
+  retries: 3
+  delay: 5
+  changed_when: apply_result.rc == 0
+  run_once: true
+
+- name: Wait for MetalLB controller deployment to be ready
+  ansible.builtin.command: >-
+    {{ k3s_kubectl_binary | default('k3s kubectl') }} -n metallb-system wait deploy/controller --for condition=Available=True --timeout=120s
+  changed_when: false
+  run_once: true
